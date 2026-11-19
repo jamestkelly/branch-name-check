@@ -35,3 +35,7 @@ The action returns a nonzero exit status on failure. Make the check required in 
 `v1` tracks compatible releases. Pin the full commit SHA from a [GitHub Release](https://github.com/jamestkelly/branch-name-check/releases) for reproducible builds. Callers already pinned to the original shell workflow keep that implementation until they update.
 
 See [Contributing](CONTRIBUTING.md) for development and release instructions, or [Security](SECURITY.md) to report a vulnerability.
+
+## License
+
+[MIT](LICENSE) © 2026 Jim Kelly.
