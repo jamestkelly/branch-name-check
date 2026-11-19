@@ -5,3 +5,4 @@
 - Preserve `.github/workflows/branch-name-check.yml`, the `Check Branch Name` job name, and `action.yml` inputs. Consumers can pin the reusable workflow or require its check by name.
 - Rebuild and commit the runtime artifact with its source. Before handing off, run the commands in [CONTRIBUTING.md](CONTRIBUTING.md) and confirm the built entry point works without `node_modules`.
 - For release changes, follow [the release contract](CONTRIBUTING.md#releases): immutable exact versions, a movable major alias, and write permissions confined to the release job.
+- Add required PR jobs to `review-gate.needs` in `checks.yml`. Keep `Review Gate` as the single stable required status on `main`.
