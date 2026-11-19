@@ -49,3 +49,5 @@ jobs:
           previous=$(git ls-remote --refs origin "refs/tags/$major" | cut -f1)
           if [[ -n "$previous" ]]; then git merge-base --is-ancestor "$previous" HEAD; fi
           git push --force-with-lease="refs/tags/$major:$previous" origin "HEAD:refs/tags/$major"
+          printf '### GitHub Marketplace\n[Review Marketplace publication for %s](%s/%s/releases/edit/%s). Select **Publish this Action to the GitHub Marketplace** and save the release.\n' \
+            "$version" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$version" >> "$GITHUB_STEP_SUMMARY"

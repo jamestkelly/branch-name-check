@@ -1,6 +1,9 @@
 name: Branch Name Check
-description: Validate a Git branch name against conventional branch prefixes.
+description: Check pull request source branches for conventional prefixes and valid Git ref syntax, including pull requests from forks.
 author: jamestkelly
+branding:
+  icon: git-branch
+  color: blue
 inputs:
   branch:
     description: Source branch name, without refs/heads/.
