@@ -10,9 +10,11 @@ pnpm validate
 actionlint
 ```
 
-Commit `dist/check.js` alongside TypeScript changes. Consumers run that file without installing dependencies. Pull requests run the tests, check the compiled file matches source, and invoke the action on a hosted runner.
+Commit TypeScript source only. Pull requests build `dist/check.js` from a clean checkout, exercise it as a local action, and reject tracked `dist/` files.
 
 ## Releases
+
+The workflow builds the validated `main` revision and commits the runtime on `release-dist`. Each package commit preserves its source revision and previous package history, so semantic-release can find earlier versions. Both version tags and major aliases point to packaged commits. Leave `release-dist` under CI control.
 
 Use Conventional Commit PR titles for squash merges to `main`. After checks pass, semantic-release creates a version tag and a GitHub Release with notes. `feat` bumps minor; `fix`, `perf`, and `chore` bump patch. Mark breaking changes with `!` or a `BREAKING CHANGE:` footer. Changes limited to `docs`, `ci`, `test`, or `refactor` do not normally release.
 

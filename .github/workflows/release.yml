@@ -34,10 +34,16 @@ jobs:
           cache: pnpm
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
+      - name: Build Release Commit
+        run: |
+          pnpm build
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          bash scripts/package-release.sh
       - name: Publish Version and Release Notes
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: pnpm exec semantic-release
+        run: GITHUB_REF=refs/heads/release-dist GITHUB_SHA=$(git rev-parse HEAD) pnpm exec semantic-release
       - name: Advance Released Major Tag
         env:
           GH_TOKEN: ${{ github.token }}

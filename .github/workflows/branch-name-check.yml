@@ -15,5 +15,12 @@ jobs:
           git init --quiet .
           git fetch --quiet --depth=1 https://github.com/jamestkelly/branch-name-check.git "$ACTION_SHA"
           git checkout --quiet --detach FETCH_HEAD
+      - name: Set Up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: 24
+          package-manager-cache: false
       - name: Validate Branch Name
-        uses: ./
+        env:
+          INPUT_BRANCH: ${{ github.head_ref || github.ref_name }}
+        run: node src/check.ts
