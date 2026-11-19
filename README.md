@@ -1,8 +1,8 @@
 # Branch Name Check
 
-Reusable GitHub Actions workflow for validating branch names.
+Reject pull requests from branches that don't follow your naming convention. For example, `fix/login` and `dependabot/npm_and_yarn/node-24` pass; `login-fix` does not. The check uses the source branch, including for forks, rather than GitHub's temporary merge ref.
 
-Call this workflow from a job in `.github/workflows/`:
+## Use in a GitHub.com repository
 
 ```yaml
 name: Standard PR Checks
@@ -13,6 +13,25 @@ jobs:
     uses: jamestkelly/branch-name-check/.github/workflows/branch-name-check.yml@v1
 ```
 
-Use a full commit SHA instead of `v1` to pin the implementation. On pull requests the check validates the source branch, including branches from forks. On other events it validates the ref name.
+To include the check as a **step** instead, use the following once the first TypeScript release is published:
 
-`main`, `development`, and `staging` are allowed. Other branches need a nonempty name after one of: `feat/`, `feature/`, `fix/`, `bugfix/`, `chore/`, `hotfix/`, `release/`, `revert/`, `refactor/`, `docs/`, `test/`, `ci/`, or `dependabot/`.
+```yaml
+- name: Validate Branch Name
+  uses: jamestkelly/branch-name-check@v1
+```
+
+No checkout of the consumer repository, secrets, or token permissions are required. The step uses the runner's Node.js 24 action runtime and requires Git on `PATH`. It accepts an optional `branch` input, defaults to `github.head_ref` on PRs, and otherwise uses `github.ref_name`. Use it on branch events; tag names are not the intended input.
+
+## Naming policy
+
+`main`, `development`, and `staging` pass as exact names. Other names must be valid Git refs with a nonempty path after one of these prefixes:
+
+`feat/`, `feature/`, `fix/`, `bugfix/`, `chore/`, `hotfix/`, `release/`, `revert/`, `refactor/`, `docs/`, `test/`, `ci/`, `dependabot/`.
+
+The action returns a nonzero exit status on failure. Make the check required in the consumer repository's branch ruleset if it should block merging.
+
+## Versions and support
+
+`v1` tracks compatible releases. Pin the full commit SHA from a [GitHub Release](https://github.com/jamestkelly/branch-name-check/releases) for reproducible builds. Callers already pinned to the original shell workflow keep that implementation until they update.
+
+See [Contributing](CONTRIBUTING.md) for development and release instructions, or [Security](SECURITY.md) to report a vulnerability.

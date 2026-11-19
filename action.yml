@@ -1,0 +1,11 @@
+name: Branch Name Check
+description: Validate a Git branch name against conventional branch prefixes.
+author: jamestkelly
+inputs:
+  branch:
+    description: Source branch name, without refs/heads/.
+    required: false
+    default: ${{ github.head_ref || github.ref_name }}
+runs:
+  using: node24
+  main: dist/check.js

@@ -1,0 +1,19 @@
+# Contributing
+
+For a naming-policy change, open an issue with one branch that should pass and one that should fail. For a bug, include the pinned action version, event type, expected outcome, and actual outcome.
+
+Use Node.js 24.10 or later and the pnpm version in `package.json`. Run:
+
+```sh
+pnpm install --frozen-lockfile
+pnpm validate
+actionlint
+```
+
+Commit `dist/check.js` alongside TypeScript changes. Consumers run that file without installing dependencies. Pull requests run the tests, check the compiled file matches source, and invoke the action on a hosted runner.
+
+## Releases
+
+Use Conventional Commit PR titles for squash merges to `main`. After checks pass, semantic-release creates a version tag and a GitHub Release with notes. `feat` bumps minor; `fix`, `perf`, and `chore` bump patch. Mark breaking changes with `!` or a `BREAKING CHANGE:` footer. Changes limited to `docs`, `ci`, `test`, or `refactor` do not normally release.
+
+Only the floating major tag (such as `v1`) moves. The job advances it after verifying the exact release exists, including on a rerun. No npm package or registry credentials are needed. Use **Release → Run workflow** on `main` to retry a failed run; inspect the tag and release if publication stopped partway through.

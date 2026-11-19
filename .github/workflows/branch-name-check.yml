@@ -1,8 +1,5 @@
 name: Branch Name Check
-
-on:
-  workflow_call:
-
+on: workflow_call
 permissions: {}
 
 jobs:
@@ -10,13 +7,13 @@ jobs:
     name: Check Branch Name
     runs-on: ubuntu-latest
     steps:
-      - name: Validate Branch Prefix
+      - name: Fetch This Workflow's Action
         shell: bash
         env:
-          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+          ACTION_SHA: ${{ job.workflow_sha }}
         run: |
-          case "$BRANCH_NAME" in
-            main|development|staging) ;;
-            feat/?*|feature/?*|fix/?*|bugfix/?*|chore/?*|hotfix/?*|release/?*|revert/?*|refactor/?*|docs/?*|test/?*|ci/?*|dependabot/?*) ;;
-            *) printf 'Invalid branch name: %s. Use a prefix such as feat/, fix/, or docs/.\n' "$BRANCH_NAME" >&2; exit 1 ;;
-          esac
+          git init --quiet .
+          git fetch --quiet --depth=1 https://github.com/jamestkelly/branch-name-check.git "$ACTION_SHA"
+          git checkout --quiet --detach FETCH_HEAD
+      - name: Validate Branch Name
+        uses: ./
